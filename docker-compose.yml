@@ -1,0 +1,34 @@
+version: "3.7"
+services:
+  git-server:
+    build:
+      dockerfile: gitserver.Dockerfile
+      context: .
+    restart: always
+    ports:
+      - "8080:80"
+    volumes:
+      - ./repos:/var/www/git
+  go-service:
+    build:
+      dockerfile: goservice.Dockerfile
+      context: .
+    ports: 
+      - "3001:3001"
+    volumes:
+      - ./repos:/app
+    restart: always
+    stdin_open: true
+    tty: true
+
+  db:
+    image: mongo:latest
+    ports:
+      - "27017:27017"
+    container_name: Mongodatabase
+    volumes: 
+    - mongo:/data/db
+    hostname: mongo
+
+volumes:
+  mongo:

@@ -1,0 +1,92 @@
+
+	// path of the repository
+	// remember the need to check if the path provided is a git repository
+
+	repo, _ := git.PlainOpen(".")
+
+	ref, _ := repo.Head()
+
+	commit, _ := repo.CommitObject(ref.Hash())
+
+	fmt.Println(commit)
+
+
+package main
+
+import (
+	"fmt"
+
+	"github.com/go-git/go-git/v5"
+	"github.com/go-git/go-git/v5/plumbing/object"
+)
+
+func main() {
+
+	// path of the repository
+	// displays the files in a given commit 
+
+	repo, _ := git.PlainOpen(".") // opens repository
+
+	ref, _ := repo.Head() // gives reference to HEAD
+
+	commit, _ := repo.CommitObject(ref.Hash()) // gives access to the commit as a object
+
+	files, _ := commit.Files() // reference to a iterator of file objects
+
+	files.ForEach(func(f *object.File) error {
+		fmt.Println(f.Hash, f.Name)
+		return nil
+	})
+
+}
+
+// blob hashes 
+
+package main
+
+import (
+	"fmt"
+
+	"github.com/go-git/go-git/v5"
+	"github.com/go-git/go-git/v5/plumbing/object"
+)
+
+func main() {
+
+	repo, _ := git.PlainOpen(".") // path remember u need to find those repositories
+
+
+	blobs, _ := repo.BlobObjects() // a git object type check the git documentation
+
+	blobs.ForEach(func(b *object.Blob) error {
+
+		fmt.Println(b.Hash)
+
+		return nil
+	})
+}
+
+// displays the entire object database of the repository
+
+package main
+
+import (
+	"fmt"
+
+	"github.com/go-git/go-git/v5"
+	"github.com/go-git/go-git/v5/plumbing/object"
+)
+
+func main() {
+
+	repo, _ := git.PlainOpen(".") // path remember u need to find those repositories
+
+	objects, _ := repo.Objects()
+
+	objects.ForEach(func(db object.Object) error {
+
+		fmt.Println(db)
+
+		return nil
+	})
+}
